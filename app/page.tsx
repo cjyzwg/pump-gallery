@@ -46,7 +46,7 @@ export default function Page() {
     // Set up interval for fetching data every 2 minutes
     const intervalId = setInterval(() => {
       fetchData();
-    }, 120000); // 2 minutes in milliseconds
+    }, 20000); // 20s in milliseconds
 
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
