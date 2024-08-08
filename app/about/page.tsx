@@ -39,9 +39,9 @@ const AboutPage = () => {
             <div className="pt-6 space-y-4 text-center md:p-8 md:text-left">
               <blockquote>
                 <p className="text-lg font-medium">
-                  “Tailwind CSS is the only framework that I've seen scale
-                  on large teams. It’s easy to customize, adapts to any design,
-                  and the build size is tiny.”
+                  Tailwind CSS is the only framework that I have seen scale
+                  on large teams. It is easy to customize, adapts to any design,
+                  and the build size is tiny 
                 </p>
               </blockquote>
               <figcaption className='font-medium'>
@@ -49,7 +49,7 @@ const AboutPage = () => {
                   Sarah Dayan
                 </div>
                 <div className='text-slate-700 dark:text'>
-                  Staff Engineer, Algolia
+                  Staff Engineer Algolia
                 </div>
               </figcaption>
             </div>
