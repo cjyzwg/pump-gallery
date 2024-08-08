@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import ClientComponent from './components/ClientComponent';
 
 interface ImageData {
   id: number;
@@ -47,7 +46,7 @@ export default function Page() {
     // Set up interval for fetching data every 2 minutes
     const intervalId = setInterval(() => {
       fetchData();
-    }, 20000); // 20s in milliseconds
+    }, 120000); // 2 minute in milliseconds
 
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
@@ -60,10 +59,10 @@ export default function Page() {
   return (
     <div className="container mx-auto p-4">
       <div className='md:flex'>
-        <h1 className="text-3xl font-bold m-4">图片集1</h1>
-        <h1 className="text-3xl font-bold m-4"><Link href="/load" className="text-blue-500 hover:underline">
-            图片集2
-          </Link></h1>
+        <h1 className="text-3xl font-bold m-4">
+            <Link href="/" className="text-blue-500 hover:underline">图片集1</Link>
+        </h1>
+        <h1 className="text-3xl font-bold m-4">图片集2</h1>
       </div>
      
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -103,7 +102,6 @@ export default function Page() {
           <p className="text-center text-red-500">没有图片可显示</p>
         )}
       </div>
-      <ClientComponent /> {/* Integrate ClientComponent here */}
     </div>
   );
 }
