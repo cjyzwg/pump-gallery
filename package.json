@@ -8,13 +8,17 @@
     "start": "next start",
     "lint": "next lint",
     "pro": "npm run build && npm run move",
-    "move": "cp -r .next/static .next/standalone/.next/" 
+    "move": "cp -r .next/static .next/standalone/.next/"
   },
   "dependencies": {
     "autoprefixer": "^10.4.20",
+    "date-fns-tz": "^3.1.3",
+    "moment": "^2.30.1",
+    "moment-timezone": "^0.5.45",
     "mysql2": "^3.11.0",
     "next": "^14.2.5",
     "react": "^18.3.1",
+    "react-datepicker": "^7.3.0",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {

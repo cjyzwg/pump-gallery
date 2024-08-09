@@ -1,8 +1,11 @@
 "use client"; // Ensure this component is a Client Component
-
+// Page.tsx or similar file
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+// import ClientComponent from './components/ClientComponent';
+import DatePickerComponent from '../components/DatePickerComponent';
+import moment from 'moment-timezone';
 
 interface ImageData {
   id: number;
@@ -12,10 +15,17 @@ interface ImageData {
   profits: string;
 }
 
-async function fetchImages(): Promise<ImageData[]> {
+async function fetchImages(date?: Date): Promise<ImageData[]> {
   try {
     console.log('Fetching images from /api/images');
-    const res = await fetch('http://192.168.31.30:3000/api/images');
+    const host = process.env.NEXT_PUBLIC_API_HOST;
+
+    // 检查 date 是否存在，如果不存在，则使用当前日期
+    const timeZone = 'Asia/Shanghai';
+    const formattedDate = date
+      ? moment(date).tz(timeZone).format('YYYY-MM-DD')
+      : moment().tz(timeZone).format('YYYY-MM-DD'); // 使用当前日期作为默认值
+    const res = await fetch(`http://${host}:3000/api/images?date=${formattedDate}`);
     if (!res.ok) {
       throw new Error('Failed to fetch images');
     }
@@ -32,25 +42,34 @@ export default function Page() {
   const [images, setImages] = useState<ImageData[]>([]);
   const [loading, setLoading] = useState(true);
   const [hoveredImageId, setHoveredImageId] = useState<number | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date()); // Default to today’s date
+
+  const handleDateChange = (date: Date | null) => {
+    if (date) {
+      setSelectedDate(date);
+    } else {
+      setSelectedDate(new Date()); // Default to today’s date if null is received
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const images = await fetchImages();
+      const images = await fetchImages(selectedDate);
       setImages(images);
       setLoading(false);
     };
 
-    fetchData(); // Initial fetch
+    fetchData(); // Initial fetch based on selectedDate
 
-    // Set up interval for fetching data every 2 minutes
+    // Set up interval for fetching data every 20 seconds
     const intervalId = setInterval(() => {
       fetchData();
-    }, 120000); // 2 minute in milliseconds
+    }, 120000); // 20s in milliseconds
 
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
-  }, []);
+  }, [selectedDate]); // Fetch data when selectedDate changes
 
   if (loading) {
     return <p>Loading...</p>;
@@ -58,13 +77,19 @@ export default function Page() {
 
   return (
     <div className="container mx-auto p-4">
+      <DatePickerComponent
+        initialDate={selectedDate}
+        onDateChange={handleDateChange} // Pass the handler function here
+      />
       <div className='md:flex'>
+        <h1 className="text-3xl font-bold m-4"><Link href="/" className="text-blue-500 hover:underline">
+            图片集1
+          </Link></h1>
         <h1 className="text-3xl font-bold m-4">
-            <Link href="/" className="text-blue-500 hover:underline">图片集1</Link>
+          图片集2
         </h1>
-        <h1 className="text-3xl font-bold m-4">图片集2</h1>
       </div>
-     
+      
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {images.length > 0 ? (
           images.map((image) => (
